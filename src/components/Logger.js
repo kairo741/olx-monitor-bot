@@ -1,4 +1,4 @@
-const config = require('../config')
+const config = require('../sample-config')
 const SimpleNodeLogger = require('simple-node-logger'),
 logger = SimpleNodeLogger.createSimpleLogger( config.logger );
 

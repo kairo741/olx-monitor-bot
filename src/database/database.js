@@ -1,5 +1,5 @@
 const path = require('path')
-const config = require('../config')
+const config = require('../sample-config')
 const sqlite = require("sqlite3").verbose()
 const db = new sqlite.Database(
   path.join(__dirname, '../', config.dbFile)

@@ -8,20 +8,20 @@ const adRepository = require('../repositories/adRepository.js')
 class Ad {
 
     constructor(ad) {
-        this.id         = ad.id
-        this.url        = ad.url
-        this.title      = ad.title
+        this.id = ad.id
+        this.url = ad.url
+        this.title = ad.title
         this.searchTerm = ad.searchTerm
-        this.price      = ad.price
-        this.valid      = false
-        this.saved      = null,
-        this.notify     = ad.notify
+        this.price = ad.price
+        this.valid = false
+        this.saved = null
+        this.notify = ad.notify
     }
 
     process = async () => {
 
         if (!this.isValidAd()) {
-            $logger.debug('Ad not valid');
+            $logger.debug('Anúncio inválido');
             return false
         }
 
@@ -30,9 +30,7 @@ class Ad {
             // check if this entry was already added to DB
             if (await this.alreadySaved()) {
                 return this.checkPriceChange()
-            }
-
-            else {
+            } else {
                 // create a new entry in the database
                 return this.addToDataBase()
             }
@@ -55,16 +53,14 @@ class Ad {
 
         try {
             await adRepository.createAd(this)
-            $logger.info('Ad ' + this.id + ' added to the database')
-        }
-
-        catch (error) {
+            $logger.info('Anúncio ' + this.id + ' adicionado no banco de dados')
+        } catch (error) {
             $logger.error(error)
         }
 
         if (this.notify) {
             try {
-                const msg = 'New ad found!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url
+                const msg = '🚨NOVO ANÚNCIO!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url
                 notifier.sendNotification(msg, this.id)
             } catch (error) {
                 $logger.error('Could not send a notification')
@@ -91,11 +87,11 @@ class Ad {
             // just send a notification if the price dropped
             if (this.price < this.saved.price) {
 
-                $logger.info('This ad had a price reduction: ' + this.url)
+                $logger.info('Esse anúncio teve redução de preço: ' + this.url)
 
                 const decreasePercentage = Math.abs(Math.round(((this.price - this.saved.price) / this.saved.price) * 100))
 
-                const msg = 'Price drop found! ' + decreasePercentage + '% OFF!\n' +
+                const msg = '🚨QUEDA DE PREÇO! ' + decreasePercentage + '% OFF!\n' +
                     'From R$' + this.saved.price + ' to R$' + this.price + '\n\n' + this.url
 
                 try {
@@ -115,8 +111,7 @@ class Ad {
         if (!isNaN(this.price) && this.url && this.id) {
             this.valid = true
             return true
-        }
-        else {
+        } else {
             this.valid = false
             return false
         }

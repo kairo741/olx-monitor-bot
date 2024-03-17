@@ -3,8 +3,8 @@ require('dotenv').config()
 let config = {}
 
 config.urls = [
-    'url1',
-    'url2'
+    'https://www.olx.com.br/brasil?q=nintendo%203ds&sf=1',
+    'https://www.olx.com.br/brasil?q=nintendo%203ds%20xl&sf=1'
 ]
 
 // this tool can help you create the interval string:
@@ -13,10 +13,10 @@ config.urls = [
 config.interval = '*/5 * * * *' 
 config.telegramChatID = process.env.TELEGRAM_CHAT_ID
 config.telegramToken = process.env.TELEGRAM_TOKEN
-config.dbFile = '../data/ads.db'
+config.dbFile = './data/ads.db'
 
 config.logger={
-    logFilePath: '../data/scrapper.log',
+    logFilePath: './data/scrapper.log',
     timestampFormat:'YYYY-MM-DD HH:mm:ss'
 }
 

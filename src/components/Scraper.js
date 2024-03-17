@@ -4,6 +4,7 @@ const $httpClient = require('./HttpClient.js')
 const scraperRepository = require('../repositories/scrapperRepository.js')
 
 const Ad = require('./Ad.js');
+// const config = require("../sample-config");
 
 let page = 1
 let maxPrice = 0
@@ -25,22 +26,23 @@ const scraper = async (url) => {
     const parsedUrl = new URL(url)
     const searchTerm = parsedUrl.searchParams.get('q') || ''
     const notify = await urlAlreadySearched(url)
-    $logger.info(`Will notify: ${notify}`)
+    $logger.info(`Will notify: ${ notify }`)
 
-    do {
-        currentUrl = setUrlParam(url, 'o', page)
-        let response
-        try {
-            response        = await $httpClient(currentUrl)
-            const $         = cheerio.load(response)
-            nextPage        = await scrapePage($, searchTerm, notify, url)
-        } catch (error) {
-            $logger.error(error)
-            return
-        }
-        page++
+    // do {
+    currentUrl = setUrlParam(url, 'o', page)
+    let response
+    console.log(`%c ${ new Date().toLocaleString() } | Buscando... Url: ${ currentUrl }`, 'background: #222; color: #bada55');
+    try {
+        response = await $httpClient(currentUrl)
+        const $ = cheerio.load(response)
+        nextPage = await scrapePage($, searchTerm, notify, url)
+    } catch (error) {
+        $logger.error(error)
+        return
+    }
+    page++
 
-    } while (nextPage);
+    // } while (nextPage);
 
     $logger.info('Valid ads: ' + validAds)
 
@@ -73,13 +75,13 @@ const scrapePage = async ($, searchTerm, notify) => {
 
         const adList = JSON.parse(script).props.pageProps.ads
 
-        if (!Array.isArray(adList) || !adList.length ) {
+        if (!Array.isArray(adList) || !adList.length) {
             return false
         }
 
         adsFound += adList.length
 
-        $logger.info(`Checking new ads for: ${searchTerm}`)
+        $logger.info(`Checking new ads for: ${ searchTerm }`)
         $logger.info('Ads found: ' + adsFound)
 
         for (let i = 0; i < adList.length; i++) {
