@@ -34,7 +34,7 @@ const saveLog = async (data) => {
 }
 
 const getLogsByUrl = async (url, limit) => {
-    $logger.debug('scrapperRepository: getLogsByUrld')
+    $logger.debug('scrapperRepository: getLogsByUrl')
 
     const query = `SELECT * FROM logs WHERE url = ? LIMIT ?`
     const values = [url, limit]

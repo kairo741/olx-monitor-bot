@@ -40,8 +40,7 @@ const scraper = async (url) => {
         $logger.error(error)
         return
     }
-    page++
-
+    // page++
     // } while (nextPage);
 
     $logger.info('Valid ads: ' + validAds)
@@ -104,7 +103,7 @@ const scrapePage = async ($, searchTerm, notify) => {
             }
 
             const ad = new Ad(result)
-            ad.process()
+            await ad.process()
 
             if (ad.valid) {
                 validAds++
