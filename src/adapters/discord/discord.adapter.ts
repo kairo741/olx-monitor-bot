@@ -4,13 +4,14 @@ import { config } from '../../config';
 import { commands } from "./commands";
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds,
+  intents: [ GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.DirectMessages,],
+    GatewayIntentBits.DirectMessages ]
 });
 
 client.once("ready", async () => {
   // await deployCommands({ guildId: "967174673760657409" });
+  // initCron(client)
   console.log("Bot On! 🤖");
 });
 
@@ -19,6 +20,14 @@ client.on("guildCreate", async (guild) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
+  if(interaction.isAnySelectMenu()){
+    const { customId } = interaction;
+    if (commands[customId as keyof typeof commands]) {
+      // @ts-ignore
+      commands[customId as keyof typeof commands].menuAction(interaction);
+    }
+  }
+
   if (!interaction.isCommand()) {
     return;
   }

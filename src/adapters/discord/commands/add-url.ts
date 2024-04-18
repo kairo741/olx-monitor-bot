@@ -39,6 +39,7 @@ export async function execute(interaction: CommandInteraction) {
         }
 
         try {
+          new URL(urlString.toString()); // Verifica se a URL é válida
           const dbUrl = rows.filter(value => (value.name == urlName && value.serverId == server.id));
           if (!rows || dbUrl.length <= 0) {
             embedMessage.setTitle('URL de busca Inserida!');
@@ -66,7 +67,10 @@ export async function execute(interaction: CommandInteraction) {
           return
         } catch (e) {
           console.error(e)
-          return `Erro interno: ${ e }`
+          embedMessage
+            .setTitle('ERRO')
+            .setDescription(`Ocorreu um erro: ${ e }`);
+          return
         }
       })
     })
