@@ -43,6 +43,7 @@ const createTables = async () => {
         "id"            INTEGER NOT NULL UNIQUE,
         "url"           TEXT NOT NULL,
         "name"	        TEXT NOT NULL,
+        "serverId"	    TEXT NOT NULL,
         "urlSource"     TEXT NOT NULL,
         "created"       TEXT NOT NULL,
         "lastUpdate"    TEXT NOT NULL,
