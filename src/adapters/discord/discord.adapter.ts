@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits } from "discord.js";
 import { deployCommands } from './deploy-commands';
 import { config } from '../../config';
 import { commands } from "./commands";
+import { modalSubmit } from './commands/add-url';
 
 const client = new Client({
   intents: [ GatewayIntentBits.Guilds,
@@ -25,6 +26,14 @@ client.on("interactionCreate", async (interaction) => {
     if (commands[customId as keyof typeof commands]) {
       // @ts-ignore
       commands[customId as keyof typeof commands].menuAction(interaction);
+    }
+  }
+
+  if(interaction.isModalSubmit()){
+    const { customId } = interaction;
+    if (commands[customId as keyof typeof commands]) {
+      // @ts-ignore
+      commands[customId as keyof typeof commands].modalSubmit(interaction);
     }
   }
 
